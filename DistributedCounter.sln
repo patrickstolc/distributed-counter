@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+#
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{47B72DAA-339D-4180-AA61-B0B03008027C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterAPI", "projects\CounterAPI\CounterAPI.csproj", "{2C577889-C4EB-4BAF-9814-800BFEBCDC49}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{FA8B7D1C-8931-4CB3-B3AC-79C2327ADD6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedModels", "packages\SharedModels\SharedModels.csproj", "{FD930E01-6877-4F79-9E69-C7130248214A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "packages\Repository\Repository.csproj", "{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageClient", "packages\MessageClient\MessageClient.csproj", "{600574C7-5FF8-4CAE-AB56-422E9F011334}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterService", "projects\CounterService\CounterService.csproj", "{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "projects\NotificationService\NotificationService.csproj", "{E3835863-0B1F-414F-A3B0-0BBE02CC0C46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C577889-C4EB-4BAF-9814-800BFEBCDC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C577889-C4EB-4BAF-9814-800BFEBCDC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C577889-C4EB-4BAF-9814-800BFEBCDC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C577889-C4EB-4BAF-9814-800BFEBCDC49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD930E01-6877-4F79-9E69-C7130248214A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD930E01-6877-4F79-9E69-C7130248214A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD930E01-6877-4F79-9E69-C7130248214A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD930E01-6877-4F79-9E69-C7130248214A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600574C7-5FF8-4CAE-AB56-422E9F011334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600574C7-5FF8-4CAE-AB56-422E9F011334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600574C7-5FF8-4CAE-AB56-422E9F011334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600574C7-5FF8-4CAE-AB56-422E9F011334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3835863-0B1F-414F-A3B0-0BBE02CC0C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3835863-0B1F-414F-A3B0-0BBE02CC0C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3835863-0B1F-414F-A3B0-0BBE02CC0C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3835863-0B1F-414F-A3B0-0BBE02CC0C46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2C577889-C4EB-4BAF-9814-800BFEBCDC49} = {47B72DAA-339D-4180-AA61-B0B03008027C}
+		{FD930E01-6877-4F79-9E69-C7130248214A} = {FA8B7D1C-8931-4CB3-B3AC-79C2327ADD6F}
+		{C9860553-DB9A-4CE7-BD6E-79D224E9B2F6} = {FA8B7D1C-8931-4CB3-B3AC-79C2327ADD6F}
+		{600574C7-5FF8-4CAE-AB56-422E9F011334} = {FA8B7D1C-8931-4CB3-B3AC-79C2327ADD6F}
+		{6BA1DA3D-E4CF-4573-993E-0AA8BC7E4A2C} = {47B72DAA-339D-4180-AA61-B0B03008027C}
+		{E3835863-0B1F-414F-A3B0-0BBE02CC0C46} = {47B72DAA-339D-4180-AA61-B0B03008027C}
+	EndGlobalSection
+EndGlobal

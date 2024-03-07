@@ -1,0 +1,47 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:61148",
+      "sslPort": 44354
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5116",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest",
+        "LIKE_SERVICE_HOST": "http://counter-service"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7147;http://localhost:5116",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest",
+        "LIKE_SERVICE_HOST": "http://counter-service"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest",
+        "LIKE_SERVICE_HOST": "http://counter-service"
+      }
+    }
+  }
+}

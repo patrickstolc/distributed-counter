@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:11170",
+      "sslPort": 44321
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5215",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7189;http://localhost:5215",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "EASYNETQ_CONNECTION_STRING": "host=localhost;port=5672;virtualHost=/;username=guest;password=guest"
+      }
+    }
+  }
+}

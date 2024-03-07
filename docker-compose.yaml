@@ -1,0 +1,65 @@
+version: '3'
+services:
+  like-cache:
+    image: 'redislabs/redisearch:latest'
+    container_name: 'like-cache'
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    ports:
+      - '6379:6379'
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  notificationservice:
+    image: notification-service
+    environment:
+      - EASYNETQ_CONNECTION_STRING=host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest
+    build:
+      context: .
+      dockerfile: projects/NotificationService/Dockerfile
+    ports:
+      - '9090:80'
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  counterapi:
+    image: counter-api
+    environment:
+      - EASYNETQ_CONNECTION_STRING=host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest
+      - LIKE_SERVICE_HOST=http://counterservice
+    build:
+      context: .
+      dockerfile: projects/CounterAPI/Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      like-cache:
+        condition: service_healthy
+  counterservice:
+    image: counter-service
+    environment:
+      - EASYNETQ_CONNECTION_STRING=host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest
+      - REDIS_HOSTNAME=like-cache
+    build:
+      context: .
+      dockerfile: projects/CounterService/Dockerfile
+    ports:
+      - '5050:80'
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      like-cache:
+        condition: service_healthy
