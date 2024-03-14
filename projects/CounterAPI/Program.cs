@@ -3,7 +3,7 @@ using counter_api.Core.Factories;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-
+builder.Services.AddHttpLogging(o => { });
 builder.Services.AddSingleton(LikeServiceFactory.CreateLikeService().Start());
 
 // Add services to the container.

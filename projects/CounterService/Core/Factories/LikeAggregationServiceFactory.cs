@@ -13,6 +13,9 @@ public static class LikeAggregationServiceFactory
         {
             throw new Exception("REDIS_HOSTNAME environment variable not set");
         }
+        
+        Console.WriteLine($"Trying to connect to Redis at {redisHostname}");
+        
         var redisConnection = ConnectionMultiplexer.Connect(redisHostname);
         var countCacheRepository = new LikeCountCacheRepository(redisConnection);
         return new LikeAggregationService(countCacheRepository);

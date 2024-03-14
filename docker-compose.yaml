@@ -1,5 +1,17 @@
 version: '3'
 services:
+  mssql-database:
+    image: 'mcr.microsoft.com/azure-sql-edge:latest'
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S mssql-database -U sa -P SuperSecret7! -Q 'SELECT 1' & exit 0 || exit 1"]
+      interval: 10s
+      retries: 10
+      timeout: 3s
+    environment:
+      MSSQL_SA_PASSWORD: "SuperSecret7!"
+      ACCEPT_EULA: "Y"      
+    ports:
+      - "1434:1433"
   like-cache:
     image: 'redislabs/redisearch:latest'
     container_name: 'like-cache'
@@ -59,6 +71,8 @@ services:
     ports:
       - '5050:80'
     depends_on:
+      mssql-database:
+        condition: service_healthy
       rabbitmq:
         condition: service_healthy
       like-cache:

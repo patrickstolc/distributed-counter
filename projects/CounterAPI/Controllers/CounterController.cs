@@ -15,7 +15,7 @@ public class CounterController : ControllerBase
     {
         _likeService = likeService;
     }
-    
+
     [HttpGet("{postId}/{userId}", Name = "GetUserLike")]
     public async Task<bool> GetUserLike(int postId, int userId)
     {
@@ -36,7 +36,13 @@ public class CounterController : ControllerBase
     [HttpPut(Name = "NewLike")]
     public NewLikeApiResponse Update([FromBody]LikeRequest like)
     {
-        _likeService.AddLike(like);
+        try
+        {
+            _likeService.AddLike(like);
+        } catch (Exception e)
+        {
+        }
+
         var newCount = like.CurrentCount + (like.Type == NewLikeType.Like ? 1 : -1);
         return new NewLikeApiResponse
         {

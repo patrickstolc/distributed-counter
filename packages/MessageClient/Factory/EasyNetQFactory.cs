@@ -27,7 +27,7 @@ public class EasyNetQFactory : MessageClientFactory
     return FactoryMethod<TMessage>(pubSubStrategy);
   }
   
-  public MessageClient<TMessage> CreateSendReceiveMessageClient<TMessage>(string queueName)
+  public virtual MessageClient<TMessage> CreateSendReceiveMessageClient<TMessage>(string queueName)
   {
     var sendReceiveStrategy = new SendReceiveStrategy(queueName);
     return FactoryMethod<TMessage>(sendReceiveStrategy);

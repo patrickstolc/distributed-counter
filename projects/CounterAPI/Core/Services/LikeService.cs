@@ -9,6 +9,11 @@ public class LikeService
     private readonly MessageClient<NewLikeMessage> _newLikeClient;
     private readonly HttpClient _httpClient;
     private readonly string _likeServiceHost;
+
+    public LikeService()
+    {
+        
+    }
     
     public LikeService(MessageClient<NewLikeMessage> newLikeClient, HttpClient httpClient, string likeServiceHost)
     {
@@ -23,7 +28,7 @@ public class LikeService
         return this;
     }
     
-    public void AddLike(LikeRequest like)
+    public virtual void AddLike(LikeRequest like)
     {
         Console.WriteLine($"Sending new like message for post {like.PostId} of type {like.Type} for user {like.UserId} using 'new-like' queue");
         _newLikeClient.SendUsingQueue(
