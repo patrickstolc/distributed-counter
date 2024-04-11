@@ -24,23 +24,32 @@ public class FailureRecoveryProcess: BackgroundService
         
         while(!stoppingToken.IsCancellationRequested)
         {
+            await Task.Delay(10000, stoppingToken);
+            
             bool canRecover = failureRecoveryService.CanIRecover();
             Console.WriteLine("Failure recovery process is running..");
-            Console.WriteLine($"Can recover: {canRecover}");
-            
-            if (canRecover)
+
+            if (!canRecover)
             {
-                Console.WriteLine("Trying to recover failed messages..");
-                try
-                {
-                    failureRecoveryService.Recover();
-                }
-                catch
-                {
-                    
-                }
+                Console.WriteLine("Cannot recover, trying again later..");
+                continue;
             }
-            await Task.Delay(10000, stoppingToken);
+            
+            if(!failureRecoveryService.AnyFailedMessages())
+            {
+                Console.WriteLine("No failed messages to recover..");
+                continue;
+            }
+
+            try
+            {
+                Console.WriteLine("Recovering failed messages..");
+                failureRecoveryService.Recover();
+                Console.WriteLine("Failed messages recovered..");
+            } catch (Exception e)
+            {
+                Console.WriteLine($"Failed to recover messages: {e.Message}");
+            }
         }
         
         Console.WriteLine("Failure recovery process is stopping..");

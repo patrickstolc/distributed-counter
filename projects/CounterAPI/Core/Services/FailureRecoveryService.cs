@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Sockets;
 using MessageClient;
 using SharedModels;
 
@@ -15,9 +17,30 @@ public class FailureRecoveryService
         _newLikeClient = newLikeClient;
     }
 
+    private bool CheckConnectivity(string hostname, int port)
+    {
+        try
+        {
+            TcpClient client = new TcpClient();
+            IPAddress ipAddress = Dns.GetHostEntry (hostname).AddressList[0];
+            IPEndPoint ipEndPoint = new IPEndPoint (ipAddress, port);
+            client.Connect(ipEndPoint);
+            client.Close();
+            return true;
+        } catch (Exception e)
+        {
+            return false;
+        }
+    }
+    
+    public bool AnyFailedMessages()
+    {
+        return _failedMessageCache.HasFailedMessages("new-like");
+    }
+
     public bool CanIRecover()
     {
-        return _newLikeClient.CanConnect();
+        return CheckConnectivity("rabbitmq", 5672);
     }
     
     public void Recover()
@@ -25,7 +48,8 @@ public class FailureRecoveryService
         var messages = _failedMessageCache.GetFailedMessages<NewLikeMessage>("new-like");
         if (messages == null)
             return;
-        
+
+        _newLikeClient.Connect();
         foreach (var message in messages)
         {
             _newLikeClient.SendUsingQueue(message, "new-like");

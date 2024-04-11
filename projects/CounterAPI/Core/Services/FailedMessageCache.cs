@@ -11,6 +11,12 @@ public class FailedMessageCache
     {
         _redis = ConnectionMultiplexer.Connect($"{hostname}:{port}");
     }
+    
+    public bool HasFailedMessages(string messageType)
+    {
+        IDatabase db = _redis.GetDatabase();
+        return db.ListLength(messageType) > 0;
+    }
 
     public void AddFailedMessage(string messageType, object message)
     {
