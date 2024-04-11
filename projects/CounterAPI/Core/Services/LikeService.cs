@@ -9,17 +9,19 @@ public class LikeService
     private readonly MessageClient<NewLikeMessage> _newLikeClient;
     private readonly HttpClient _httpClient;
     private readonly string _likeServiceHost;
+    private readonly FailedMessageCache _failedMessageCache;
 
     public LikeService()
     {
         
     }
     
-    public LikeService(MessageClient<NewLikeMessage> newLikeClient, HttpClient httpClient, string likeServiceHost)
+    public LikeService(MessageClient<NewLikeMessage> newLikeClient, HttpClient httpClient, string likeServiceHost, FailedMessageCache failedMessageCache)
     {
         _newLikeClient = newLikeClient;
         _httpClient = httpClient;
         _likeServiceHost = likeServiceHost;
+        _failedMessageCache = failedMessageCache;
     }
 
     public LikeService Start()
@@ -27,11 +29,10 @@ public class LikeService
         _newLikeClient.Connect();
         return this;
     }
-    
-    public virtual void AddLike(LikeRequest like)
+
+    private async Task SendNewLikeMessage(LikeRequest like)
     {
-        Console.WriteLine($"Sending new like message for post {like.PostId} of type {like.Type} for user {like.UserId} using 'new-like' queue");
-        _newLikeClient.SendUsingQueue(
+        NewLikeMessage message =
             new NewLikeMessage
             {
                 PostId = like.PostId,
@@ -39,9 +40,24 @@ public class LikeService
                 Type = like.Type,
                 Date = DateTime.Now,
                 Count = (like.Type == NewLikeType.Like ? 1 : -1)
-            },
-            "new-like"
-        );
+            };
+        try
+        {
+            _newLikeClient.SendUsingQueue(
+                message,
+                "new-like"
+            );
+        }
+        catch (Exception e)
+        {
+            _failedMessageCache.AddFailedMessage("new-like", message);
+        }
+    }
+    
+    public virtual void AddLike(LikeRequest like)
+    {
+        Console.WriteLine($"Sending new like message for post {like.PostId} of type {like.Type} for user {like.UserId} using 'new-like' queue");
+        Task.Run(async () => SendNewLikeMessage(like));
     }
     
     public async Task<bool> GetUserLike(int postId, int userId)

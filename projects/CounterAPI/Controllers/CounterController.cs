@@ -38,13 +38,8 @@ public class CounterController : ControllerBase
     [HttpPut]
     public NewLikeApiResponse Update([FromBody]LikeRequest like)
     {
-        try
-        {
-            _likeService.AddLike(like);
-        } catch (Exception e)
-        {
-        }
-
+        _likeService.AddLike(like);
+        
         var newCount = like.CurrentCount + (like.Type == NewLikeType.Like ? 1 : -1);
         return new NewLikeApiResponse
         {

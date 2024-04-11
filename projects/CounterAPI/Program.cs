@@ -1,6 +1,8 @@
 using System.Threading.RateLimiting;
 using counter_api.Core;
 using counter_api.Core.Factories;
+using counter_api.Core.Services;
+using CounterService.Core.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -9,6 +11,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddHttpLogging(o => { });
 builder.Services.AddSingleton(LikeServiceFactory.CreateLikeService().Start());
 builder.Services.AddControllers();
+builder.Services.AddHostedService<FailureRecoveryProcess>();
 builder.Services.AddRateLimiter(options =>
 {
     options.AddPolicy("likeRateLimitPerIpAddress", context => RateLimitPartition.GetFixedWindowLimiter(

@@ -15,6 +15,7 @@ public static class LikeServiceFactory
         if(likeServiceHost == null)
             throw new InvalidOperationException("LIKE_SERVICE_HOST environment variable not set");
         
-        return new LikeService(newLikeMessageClient, httpClient, likeServiceHost);
+        var failedMessageCache = new FailedMessageCache("like-cache", 6379);
+        return new LikeService(newLikeMessageClient, httpClient, likeServiceHost, failedMessageCache);
     }
 }

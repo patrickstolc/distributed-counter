@@ -12,6 +12,19 @@ public class MessageClient<TMessage>: IDisposable
         _driver = driver;
     }
 
+    public bool CanConnect()
+    {
+        try
+        {
+            Connect().Listen((message => { }));
+            return true;
+        } catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            return false;
+        }
+    }
+
     public MessageClient<TMessage> Connect()
     {
       _driver.Connect();
