@@ -18,6 +18,7 @@ public static class LikeAggregationServiceFactory
         
         var redisConnection = ConnectionMultiplexer.Connect(redisHostname);
         var countCacheRepository = new LikeCountCacheRepository(redisConnection);
-        return new LikeAggregationService(countCacheRepository);
+        var likeService = LikeServiceFactory.CreateLikeService();
+        return new LikeAggregationService(countCacheRepository, likeService);
     }
 }

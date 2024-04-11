@@ -16,4 +16,16 @@ public class LikeService
     {
         _likeRepository.Add(like);
     }
+    
+    public int LikeCount(int postId)
+    {
+        return GetLikes(postId).Count();
+    }
+    
+    public IEnumerable<Like> GetLikes(int postId)
+    {
+        return _likeRepository.Find(
+            like => like.PostId == postId
+        );
+    }
 }

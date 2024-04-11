@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
@@ -44,6 +45,11 @@ public class EntityFrameworkRepository<T> : IRepository<T> where T : class
         _dbSet.Remove(entity);
         if(_autoSaveChanges)
             _context.SaveChanges();
+    }
+    
+    public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+    {
+        return _dbSet.Where(predicate);
     }
   
     public IEnumerable<T> GetAll()

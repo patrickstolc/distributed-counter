@@ -17,6 +17,7 @@ public class Like
 
 public class NewLikeMessage
 {
+    public string TransactionId { get; set; } = Guid.NewGuid().ToString();
     public int PostId { get; set; }
     public int UserId { get; set; }
     public DateTime Date { get; set; }

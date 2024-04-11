@@ -1,6 +1,7 @@
 using counter_api.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using counter_api.Models;
+using Microsoft.AspNetCore.RateLimiting;
 using SharedModels;
 
 namespace counter_api.Controllers;
@@ -33,7 +34,8 @@ public class CounterController : ControllerBase
         };
     }
     
-    [HttpPut(Name = "NewLike")]
+    [EnableRateLimiting("likeRateLimitPerIpAddress")]
+    [HttpPut]
     public NewLikeApiResponse Update([FromBody]LikeRequest like)
     {
         try

@@ -1,5 +1,7 @@
 using SharedModels;
 using MessageClient;
+using Polly;
+using StackExchange.Redis;
 
 namespace CounterService.Core.Services;
 
@@ -8,12 +10,20 @@ public class NewLikeService
     private readonly MessageClient<NewLikeMessage> _newLikeMessageClient;
     private readonly LikeAggregationService _likeAggregationService;
     private readonly LikeService _likeService;
+    private readonly Policy _retryPolicy;
 
     public NewLikeService(MessageClient<NewLikeMessage> newLikeMessageClient, LikeAggregationService likeAggregationService, LikeService likeService)
     {
         _newLikeMessageClient = newLikeMessageClient;
         _likeAggregationService = likeAggregationService;
         _likeService = likeService;
+        _retryPolicy = Policy.Handle<RedisConnectionException>().WaitAndRetry(
+            5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+            onRetry: (exception, timeSpan, retryCount, context) =>
+            {
+                Console.WriteLine($"Retry {retryCount} due to {exception.Message}");
+            }
+        );
     }
     
     public void Start()
@@ -36,10 +46,18 @@ public class NewLikeService
         switch (newLikeMessage.Type)
         {
             case NewLikeType.Like:
-                _likeAggregationService.HandleLike(newLikeMessage.PostId, newLikeMessage.UserId);
+                _retryPolicy.Execute(() =>
+                {
+                    _likeAggregationService.HandleLike(newLikeMessage.PostId, newLikeMessage.UserId,
+                        newLikeMessage.TransactionId);
+                });
                 break;
             case NewLikeType.Dislike:
-                _likeAggregationService.HandleDislike(newLikeMessage.PostId, newLikeMessage.UserId);
+                _retryPolicy.Execute(() =>
+                {
+                    _likeAggregationService.HandleDislike(newLikeMessage.PostId, newLikeMessage.UserId,
+                        newLikeMessage.TransactionId);
+                });
                 break;
         }
         

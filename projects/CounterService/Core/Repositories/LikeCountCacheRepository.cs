@@ -60,6 +60,15 @@ public class LikeCountCacheRepository
         }
     }
     
+    public bool TransactionHasBeenProcessed(string transactionId)
+    {
+        var cacheKey = $"transaction:{transactionId}";
+        var db = GetDatabase();
+        var cacheValue = db.StringGet(cacheKey);
+
+        return !cacheValue.IsNullOrEmpty;
+    }
+    
     private bool LikeSchemaExists(int postId)
     {
         var ft = GetSearchCommands();
@@ -83,7 +92,7 @@ public class LikeCountCacheRepository
         json.Set("likes:" + postId, "$", like);
     }
     
-    public void IncrementLikeCount(int postId)
+    public void IncrementLikeCount(int postId, string transactionId)
     {
         Console.WriteLine($"Incrementing like count for post {postId}");
         if (!LikeSchemaExists(postId))
@@ -95,9 +104,10 @@ public class LikeCountCacheRepository
             var json = GetJsonCommands();
             json.NumIncrbyAsync("likes:" + postId, "Increment", 1);
         }
+        CacheTransactionId(transactionId);
     }
     
-    public void DecrementLikeCount(int postId)
+    public void DecrementLikeCount(int postId, string transactionId)
     {
         Console.WriteLine($"Decrementing like count for post {postId}");
         if (!LikeSchemaExists(postId))
@@ -111,6 +121,7 @@ public class LikeCountCacheRepository
             var json = GetJsonCommands();
             json.NumIncrbyAsync("likes:" + postId, "Decrement", 1);
         }
+        CacheTransactionId(transactionId);
     }
     
     public void AddUserLike(int userId, int postId)
@@ -118,6 +129,14 @@ public class LikeCountCacheRepository
         Console.WriteLine($"Adding like for user {userId} to post {postId}");
         var db = GetDatabase();
         db.SetAddAsync($"liked:{userId}", postId.ToString(), CommandFlags.FireAndForget);
+    }
+
+    public void CacheTransactionId(string transactionId)
+    {
+        var cacheKey = $"transaction:{transactionId}";
+        var db = GetDatabase();
+        
+        db.StringSetAsync(new RedisKey(cacheKey), new RedisValue("1"), TimeSpan.FromHours(12));
     }
     
     public void RemoveUserLike(int userId, int postId)

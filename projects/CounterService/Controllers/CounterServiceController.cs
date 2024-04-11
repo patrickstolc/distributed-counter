@@ -1,3 +1,4 @@
+using CounterService.Core.Helpers;
 using CounterService.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;
@@ -13,6 +14,21 @@ public class CounterServiceController : ControllerBase
     public CounterServiceController(LikeAggregationService likeAggregationService)
     {
         _likeAggregationService = likeAggregationService;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LikeTweet([FromBody] NewLikeMessage newLikeMessage)
+    {
+        if(newLikeMessage.Type == NewLikeType.Like)
+        {
+            _likeAggregationService.HandleLike(newLikeMessage.PostId, newLikeMessage.UserId,
+                newLikeMessage.TransactionId);
+        } else if (newLikeMessage.Type == NewLikeType.Dislike)
+        {
+            _likeAggregationService.HandleDislike(newLikeMessage.PostId, newLikeMessage.UserId, newLikeMessage.TransactionId);
+        }
+
+        return Ok();
     }
     
     [HttpGet("{postId}/{userId}", Name = "GetUserLike")]
