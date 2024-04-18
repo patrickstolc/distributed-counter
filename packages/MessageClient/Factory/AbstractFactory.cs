@@ -5,6 +5,6 @@ namespace MessageClient.Factory
 {
     public abstract class MessageClientFactory
     {
-      public abstract MessageClient<TMessage> FactoryMethod<TMessage>(MessagingStrategy messagingStrategy);
+      public abstract MessageClient<TMessage> FactoryMethod<TMessage>(MessagingStrategy? messagingStrategy);
     }
 };

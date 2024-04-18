@@ -8,9 +8,13 @@ namespace MessageClient.Drivers.EasyNetQ
         private readonly string _connectionString;
         private IBus? _bus;
         private IDisposable? _subscriptionResult;
-        private readonly MessagingStrategies.MessagingStrategy _messagingStrategy;
+        private readonly MessagingStrategy? _messagingStrategy;
 
-        public EasyNetQDriver(string connectionString, MessagingStrategies.MessagingStrategy messagingStrategy)
+        public EasyNetQDriver(string hostname, int port)
+        {
+            _connectionString = $"host={hostname};port={port}";
+        }
+        public EasyNetQDriver(string connectionString, MessagingStrategy? messagingStrategy)
         {
             _connectionString = connectionString;
             _messagingStrategy = messagingStrategy;

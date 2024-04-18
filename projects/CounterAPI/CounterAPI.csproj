@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\packages\FailedMessageCache\FailedMessageCache.csproj" />
     <ProjectReference Include="..\..\packages\SharedModels\SharedModels.csproj" />
     <ProjectReference Include="..\..\packages\Repository\Repository.csproj" />
     <ProjectReference Include="..\..\packages\MessageClient\MessageClient.csproj" />

@@ -64,3 +64,15 @@ services:
         condition: service_healthy
       like-cache:
         condition: service_healthy
+  failedmessageconsumer:
+    image: failed-message-consumer
+    environment:
+      - EASYNETQ_CONNECTION_STRING=host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest
+    build:
+      context: .
+      dockerfile: projects/FailedMessageConsumer/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      like-cache:
+        condition: service_healthy

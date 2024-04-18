@@ -5,7 +5,7 @@ namespace MessageClient.Factory;
 
 public class EasyNetQFactory : MessageClientFactory
 {
-  public override MessageClient<TMessage> FactoryMethod<TMessage>(MessagingStrategy messagingStrategy)
+  public override MessageClient<TMessage> FactoryMethod<TMessage>(MessagingStrategy? messagingStrategy)
   {
     var connectionString = Environment.GetEnvironmentVariable("EASYNETQ_CONNECTION_STRING");
     if(connectionString is null or "")

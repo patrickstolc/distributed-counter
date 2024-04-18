@@ -9,14 +9,14 @@ public class LikeService
     private readonly MessageClient<NewLikeMessage> _newLikeClient;
     private readonly HttpClient _httpClient;
     private readonly string _likeServiceHost;
-    private readonly FailedMessageCache _failedMessageCache;
+    private readonly FailedMessageCache.FailedMessageCache _failedMessageCache;
 
     public LikeService()
     {
         
     }
     
-    public LikeService(MessageClient<NewLikeMessage> newLikeClient, HttpClient httpClient, string likeServiceHost, FailedMessageCache failedMessageCache)
+    public LikeService(MessageClient<NewLikeMessage> newLikeClient, HttpClient httpClient, string likeServiceHost, FailedMessageCache.FailedMessageCache failedMessageCache)
     {
         _newLikeClient = newLikeClient;
         _httpClient = httpClient;

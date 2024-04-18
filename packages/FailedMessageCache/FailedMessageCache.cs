@@ -1,7 +1,7 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using StackExchange.Redis;
 
-namespace counter_api.Core.Services;
+namespace FailedMessageCache;
 
 public class FailedMessageCache
 {
@@ -9,7 +9,7 @@ public class FailedMessageCache
 
     public FailedMessageCache(string hostname, int port)
     {
-        _redis = ConnectionMultiplexer.Connect($"{hostname}:{port}");
+        _redis = ConnectionMultiplexer.Connect($"{hostname}");
     }
     
     public bool HasFailedMessages(string messageType)
@@ -34,11 +34,15 @@ public class FailedMessageCache
         db.ListRemove(messageType, serializedMessage);
     }
     
-    public IEnumerable<T>? GetFailedMessages<T>(string messageType)
+    public IEnumerable<T?>? GetFailedMessages<T>(string messageType)
     {
         
         IDatabase db = _redis.GetDatabase();
         RedisValue[] messages = db.ListRange(messageType, 0, -1);
+        
+        if (messages.Length == 0)
+            return null;
+        
         string[] serializedMessages = messages.Select(m => m.ToString()).ToArray();
 
         return serializedMessages.Select(message => JsonSerializer.Deserialize<T>(message));
